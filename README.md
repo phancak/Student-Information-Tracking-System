@@ -1,1 +1,2 @@
-# Student-Information-Tracking-System-Java-Client
+# School
+Java MySQL Project
