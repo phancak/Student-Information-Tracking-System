@@ -21,6 +21,7 @@ public class Section {
     private SimpleStringProperty sectionInstructorId;
     private SimpleStringProperty sectionEnrolment;
     private SimpleStringProperty sectionRoom;
+    private SimpleStringProperty sectionString;
 
     public Section() {
         this.sectionId = new SimpleStringProperty(this, "sectionId", "n/a");
@@ -33,6 +34,7 @@ public class Section {
         this.sectionInstructorId = new SimpleStringProperty(this, "sectionInstructorId", "n/a");
         this.sectionEnrolment = new SimpleStringProperty(this, "sectionEnrolment", "n/a");
         this.sectionRoom = new SimpleStringProperty(this, "sectionRoom", "n/a");
+        this.sectionString = new SimpleStringProperty(this, "sectionString", "n/a");
     }
 
     public static void processSectionsTable(ResultSet rs, ObservableList<Section> sectionList){
@@ -56,19 +58,6 @@ public class Section {
                 String sectionRoom = rs.getString(11);
                 String sectionEnrolment = rs.getString(12);
 
-                /*
-                System.out.println("Section Id: " + sectionId);
-                System.out.println("Section Subject Name: " + sectionSubjectName);
-                System.out.println("Section Subject Number: " + sectionSubjectNumber);
-                System.out.println("Section Start Time: " + sectionStartTime);
-                System.out.println("Section End Time: " + sectionEndTime);
-                System.out.println("Section Days: " + sectionDays);
-                System.out.println("Section Instructor: " + sectionInstructorLastName);
-                System.out.println("sectionEnrolment: " + sectionEnrolment);
-                System.out.println("");
-
-                 */
-
                 // Check if sectionList already contains the section
                 testSection = new Section();
                 testSection.setSectionId(sectionId);
@@ -81,6 +70,8 @@ public class Section {
                 testSection.setSectionInstructorId(sectionInstructorId);
                 testSection.setSectionSubjectId(sectionSubjectId);
                 testSection.setSectionRoom(sectionRoom);
+                testSection.setSectionString("Id: " + sectionId + ", " + sectionSubjectName + " " + sectionSubjectNumber +
+                        ", Instructor: " + sectionInstructorLastName + ", " + sectionInstructorFirstName);
 
                 if (!sectionList.contains(testSection)) {
                     sectionList.add(testSection);
@@ -210,6 +201,18 @@ public class Section {
 
     public void setSectionRoom(String sectionRoom) {
         this.sectionRoom.set(sectionRoom);
+    }
+
+    public String getSectionString() {
+        return sectionString.get();
+    }
+
+    public SimpleStringProperty sectionStringProperty() {
+        return sectionString;
+    }
+
+    public void setSectionString(String sectionString) {
+        this.sectionString.set(sectionString);
     }
 
     @Override

@@ -85,7 +85,7 @@ public class EnrolmentViewController implements Connectable{
         this.schoolController = schoolController;
 
         this.initialize_Student_Enrolment(); //Initializes the tab
-        Database.initialize_Section_ChoiceBox(this.sectionChoiceBox, this.schoolController.getSectionList(), this.schoolController.sectionIdList);
+        Database.initialize_Section_ChoiceBox(this.sectionChoiceBox, this.schoolController.getSectionList(), this.schoolController.sectionIdList, 1 );
 
         //Initialize section selection
         this.sectionChoiceBox.getSelectionModel().select(this.schoolController.getSectionList().indexOf(this.schoolController.sectionSelectedItems.get(0)));

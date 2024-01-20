@@ -87,23 +87,33 @@ public class Database {
         return 0;
     }
 
-    public static void initialize_Section_ChoiceBox(ChoiceBox targetChoiceBox, ObservableList<Section> sectionList, ArrayList<String> sectionIdList) {
-        System.out.println("About to clear enrolmentSectionChoiceBox");
+    public static void initialize_Section_ChoiceBox(ChoiceBox targetChoiceBox, ObservableList<Section> sectionList, ArrayList<String> sectionIdList, int type) {
         //CLear values already in ChoiceBox
         targetChoiceBox.getItems().clear(); //Calls the listener - treats this as change in selection in the box
 
-        System.out.println("Cleared enrolmentSectionChoiceBox");
-        if(sectionList.size() != 0) {
-            for (Section section : sectionList) {
-                targetChoiceBox.getItems().add("Id:" + section.getSectionId() +
-                        " " + section.getSectionSubject() +
-                        " " + section.getSectionInstructor() +
-                        " " + section.getSectionDays() +
-                        " Start:" + section.getSectionStartTime() +
-                        " End:" + section.getSectionEndTime() +
-                        " Room: " + section.getSectionRoom());
-                sectionIdList.add(section.getSectionId()); //Keeps a separate list of section ids
-            }
+        switch (type) {
+            //Type for new section, edit section, view enrolment
+            case 1:
+                if (sectionList.size() != 0) {
+                    for (Section section : sectionList) {
+                        targetChoiceBox.getItems().add("Id:" + section.getSectionId() +
+                                " " + section.getSectionSubject() +
+                                " " + section.getSectionInstructor() +
+                                " " + section.getSectionDays() +
+                                " Start:" + section.getSectionStartTime() +
+                                " End:" + section.getSectionEndTime() +
+                                " Room: " + section.getSectionRoom());
+                        sectionIdList.add(section.getSectionId()); //Keeps a separate list of section ids (used in section id identification)
+                    }
+                }
+                break;
+            case 2:
+                if (sectionList.size() != 0) {
+                    for (Section section : sectionList) {
+                        targetChoiceBox.getItems().add(section.getSectionString());
+                        sectionIdList.add(section.getSectionId()); //Keeps a separate list of section ids (used in section id identification)
+                    }
+                }
         }
     }
 }

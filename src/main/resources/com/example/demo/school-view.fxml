@@ -89,7 +89,7 @@
                                  </TitledPane>
                                  <HBox prefHeight="51.0" prefWidth="302.0">
                                     <children>
-                                       <Button fx:id="removeStudentButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="Remove Student">
+                                       <Button fx:id="removeStudentButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#onRemoveStudentButtonClick" text="Remove Student">
                                           <HBox.margin>
                                              <Insets left="15.0" right="15.0" top="10.0" />
                                           </HBox.margin>
@@ -169,7 +169,7 @@
                                  </TitledPane>
                                  <HBox prefHeight="51.0" prefWidth="302.0">
                                     <children>
-                                       <Button fx:id="removeInstructorButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="Remove Instructor">
+                                       <Button fx:id="removeInstructorButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#onRemoveInstructorButtonClick" text="Remove Instructor">
                                           <HBox.margin>
                                              <Insets left="15.0" right="15.0" top="10.0" />
                                           </HBox.margin>
@@ -249,7 +249,7 @@
                                  </TitledPane>
                                  <HBox prefHeight="51.0" prefWidth="302.0">
                                     <children>
-                                       <Button fx:id="removeSubjectButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="Remove Subject">
+                                       <Button fx:id="removeSubjectButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#onRemoveSubjectButtonClick" text="Remove Subject">
                                           <HBox.margin>
                                              <Insets left="15.0" right="15.0" top="10.0" />
                                           </HBox.margin>
@@ -302,7 +302,7 @@
                                        <Insets left="15.0" right="15.0" top="10.0" />
                                     </HBox.margin>
                                  </Button>
-                                 <Button fx:id="removeSectionButton" layoutX="25.0" layoutY="20.0" mnemonicParsing="false" text="Remove Section">
+                                 <Button fx:id="removeSectionButton" layoutX="25.0" layoutY="20.0" mnemonicParsing="false" onAction="#onRemoveSectionButtonClick" text="Remove Section">
                                     <HBox.margin>
                                        <Insets right="15.0" top="10.0" />
                                     </HBox.margin>
@@ -505,17 +505,17 @@
                                                    </TitledPane>
                                                    <HBox prefHeight="51.0" prefWidth="302.0">
                                                       <children>
-                                                         <Button fx:id="removeStudentButton1" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="Remove Item">
+                                                         <Button fx:id="removeGradedItemButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#onRemoveGradedItemButtonClick" text="Remove Item">
                                                             <HBox.margin>
                                                                <Insets left="15.0" right="15.0" top="10.0" />
                                                             </HBox.margin>
                                                          </Button>
-                                                         <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#onNewStudentButtonClick" text="New Item">
+                                                         <Button fx:id="newGradedItemButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#onNewGradedItemButtonClick" text="New Item">
                                                             <HBox.margin>
                                                                <Insets right="15.0" top="10.0" />
                                                             </HBox.margin>
                                                          </Button>
-                                                         <Button fx:id="editStudentButton1" alignment="CENTER" contentDisplay="CENTER" layoutX="148.0" layoutY="20.0" mnemonicParsing="false" onAction="#onEditStudentButtonClick" text="Edit">
+                                                         <Button fx:id="editGradedItemButton" alignment="CENTER" contentDisplay="CENTER" layoutX="148.0" layoutY="20.0" mnemonicParsing="false" onAction="#onEditGradedItemButtonClick" text="Edit">
                                                             <HBox.margin>
                                                                <Insets top="10.0" />
                                                             </HBox.margin>
@@ -551,7 +551,7 @@
                                              <Insets top="5.0" />
                                           </HBox.margin>
                                        </Text>
-                                       <ChoiceBox fx:id="gradeBookChoiceBox" prefHeight="26.0" prefWidth="670.0">
+                                       <ChoiceBox fx:id="gradeBookSectionChoiceBox" prefHeight="26.0" prefWidth="670.0">
                                           <HBox.margin>
                                              <Insets />
                                           </HBox.margin>
@@ -565,12 +565,7 @@
                            </AnchorPane>
                            <AnchorPane prefHeight="334.0" prefWidth="670.0">
                               <children>
-                                 <TableView fx:id="gradeBookTableView" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                    <columns>
-                                       <TableColumn fx:id="gradeBookTableViewStudentId" prefWidth="33.0" text="Id" />
-                                       <TableColumn fx:id="gradeBookTableViewStudentName" prefWidth="169.0" text="Name" />
-                                    </columns>
-                                 </TableView>
+                                 <TableView fx:id="gradeBookTableView" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                               </children>
                               <VBox.margin>
                                  <Insets bottom="10.0" />
@@ -580,11 +575,12 @@
                               <children>
                                  <HBox prefHeight="100.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                     <children>
-                                       <Button mnemonicParsing="false" text="Button">
+                                       <Button mnemonicParsing="false" text="Plot Grades">
                                           <HBox.margin>
-                                             <Insets left="15.0" />
+                                             <Insets left="15.0" right="15.0" />
                                           </HBox.margin>
                                        </Button>
+                                       <Button layoutX="25.0" layoutY="10.0" mnemonicParsing="false" text="View Grade Details" />
                                     </children>
                                  </HBox>
                               </children>

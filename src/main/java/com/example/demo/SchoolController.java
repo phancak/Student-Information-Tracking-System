@@ -59,7 +59,7 @@ public class SchoolController implements Connectable{
     @FXML private ListView<String> instructorTabListView = new ListView<>();
     @FXML private ListView<String> subjectTabListView = new ListView<>();
     @FXML private TableView<GradedItem> gradedItemTableView = new TableView<>();
-    @FXML private TableView<Grade> gradeBookTableView = new TableView<>();
+    @FXML private TableView gradeBookTableView = new TableView<>();
 
     //Tableview selection models
     private TableView.TableViewSelectionModel<Student> studentSelectionModel;
@@ -69,6 +69,7 @@ public class SchoolController implements Connectable{
     private TableView.TableViewSelectionModel<Student> enrolmentEnrolledSelectionModel;
     private TableView.TableViewSelectionModel<Student> enrolmentNotenrolledSelectionModel;
     private TableView.TableViewSelectionModel<GradedItem> gradedItemSelectionModel;
+    private TableView.TableViewSelectionModel<GradedItem> gradedItemSectionSelectionModel;
     private TableView.TableViewSelectionModel<Grade> gradeBookSelectionModel;
 
     //Tableview selection list
@@ -79,7 +80,7 @@ public class SchoolController implements Connectable{
     ObservableList<Student> enrolmentEnrolledSelectedItems;
     ObservableList<Student> enrolmentNotenrolledSelectedItems;
     ObservableList<GradedItem> gradedItemSelectedItems;
-    ObservableList<GradedItem> gradeBookSelectedItems;
+    ObservableList<String> gradeBookSelectedItems;
 
     //Object observable list setup
     @FXML private ObservableList<Student> studentList = FXCollections.observableArrayList();
@@ -89,7 +90,8 @@ public class SchoolController implements Connectable{
     @FXML private ObservableList<Student> enrolmentEnrolledList = FXCollections.observableArrayList();
     @FXML private ObservableList<Student> enrolmentNotenrolledList = FXCollections.observableArrayList();
     @FXML private ObservableList<GradedItem> gradedItemList = FXCollections.observableArrayList();
-    @FXML private ObservableList<GradedItem> gradeBookItemList = FXCollections.observableArrayList();
+    @FXML private ObservableList<Grade> gradeBookItemList = FXCollections.observableArrayList();
+    @FXML public ObservableList<ObservableList> gradeBookData = FXCollections.observableArrayList();
 
     //TableView Column Setup
     @FXML private TableColumn studentTableViewIdColumn = new TableColumn<>("Id");
@@ -121,8 +123,8 @@ public class SchoolController implements Connectable{
     @FXML private TableColumn gradedItemTableViewId = new TableColumn<>("Id");
     @FXML private TableColumn gradedItemTableViewTitle = new TableColumn<>("Title");
     @FXML private TableColumn gradedItemTableViewDate = new TableColumn<>("Date");
-    @FXML private TableColumn gradeBookTableViewStudentId = new TableColumn<>("Id");
-    @FXML private TableColumn gradeBookTableViewStudentName = new TableColumn<>("Name");
+    //@FXML private TableColumn gradeBookTableViewStudentId = new TableColumn<>("Id");
+    //@FXML private TableColumn gradeBookTableViewStudentName = new TableColumn<>("Name");
 
     // Students Tab Personal Information Pane
     @FXML private TextFlow studentTab_PersonalInfo_LeftTextFlow = new TextFlow();
@@ -196,7 +198,7 @@ public class SchoolController implements Connectable{
     //@FXML private Button unenrolButton = new Button();
 
     //Grade Book Pane
-    @FXML ChoiceBox gradeBookChoiceBox = new ChoiceBox(); //Choice Box (Section choice box)
+    @FXML ChoiceBox gradeBookSectionChoiceBox = new ChoiceBox(); //Choice Box (Section choice box)
     //@FXML private Button enrolButton = new Button();
     //@FXML private Button unenrolButton = new Button();
     //public ArrayList<String> sectionIdList = new ArrayList<String>();
@@ -219,6 +221,11 @@ public class SchoolController implements Connectable{
     //Sections tab buttons
     @FXML public Button removeSectionButton = new Button();
     @FXML public Button editSectionButton = new Button();
+
+    //Graded Item Buttons
+    @FXML public Button removeGradedItemButton = new Button();
+    @FXML public Button newGradedItemButton = new Button();
+    @FXML public Button editGradedItemButton = new Button();
 
     //Controller Constructor
     public SchoolController(){
@@ -321,6 +328,12 @@ public class SchoolController implements Connectable{
     }
 
     @FXML
+    public void onRemoveStudentButtonClick(){
+        Database.getDatabaseData("CALL remove_student_by_id(" + studentSelectedItems.get(0).getStudentId() + ");", "removeStudent", this.get_login_info(), this);
+        onTabStudentSelection(); //Clear and request updated student data
+    }
+
+    @FXML
     public void onNewStudentButtonClick(){
         FXMLLoader fxmlLoader2 = new FXMLLoader(SchoolApplication.class.getResource("new-student.fxml"));
         Scene scene2 = null;
@@ -343,6 +356,24 @@ public class SchoolController implements Connectable{
         // Specifies the modality for new window.
         stage2.initModality(Modality.APPLICATION_MODAL);
         stage2.show();
+    }
+
+    @FXML
+    public void onRemoveInstructorButtonClick(){
+        Database.getDatabaseData("CALL remove_instructor_by_id(" + instructorSelectedItems.get(0).getInstructorId() + ");", "removeInstructor", this.get_login_info(), this);
+        this.onTabInstructorsSelection(); //Clear and request updated data
+    }
+
+    @FXML
+    public void onRemoveSubjectButtonClick(){
+        Database.getDatabaseData("CALL remove_subject_by_id(" + subjectsSelectedItems.get(0).getSubjectId() + ");", "removeSubject", this.get_login_info(), this);
+        this.onTabSubjectsSelection(); //Clear and request updated data
+    }
+
+    @FXML
+    public void onRemoveSectionButtonClick(){
+        Database.getDatabaseData("CALL remove_section_by_id(" + sectionSelectedItems.get(0).getSectionId() + ");", "removeSubject", this.get_login_info(), this);
+        this.onTabSectionsSelection(); //Clear and request updated data
     }
 
     @FXML
@@ -411,6 +442,73 @@ public class SchoolController implements Connectable{
         stage2.show();
     }
 
+    @FXML
+    public void onNewGradedItemButtonClick(){
+        FXMLLoader fxmlLoader2 = new FXMLLoader(SchoolApplication.class.getResource("new-graded-item.fxml"));
+        Scene scene2 = null;
+        try {
+            scene2 = new Scene(fxmlLoader2.load()); //, 320, 640);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        //Gets the current selected section object
+        Section selectedSection;
+        int selectedSectionIndex = this.gardedItemSectionChoiceBox.getSelectionModel().getSelectedIndex();
+        //System.out.println("Selected section graded item: " + selectedSectionIndex);
+        //selectedSection = this.sectionList.get(selectedSectionIndex);
+        //System.out.println("Selected section graded item: " + selectedSection.getSectionString());
+        if (selectedSectionIndex >= 0) {
+            selectedSection = this.sectionList.get(selectedSectionIndex);
+        } else {
+            selectedSection = null; //No selection made
+        }
+
+        //Pass data to controller
+        NewGradedItemController newSectionController = fxmlLoader2.getController();
+        newSectionController.initData(this, true, selectedSection);
+
+        Stage stage2 = new Stage();
+        stage2.setTitle("New Graded Item");
+        stage2.setScene(scene2);
+        // Specifies the modality for new window.
+        stage2.initModality(Modality.APPLICATION_MODAL);
+        stage2.show();
+    }
+
+    @FXML
+    public void onEditGradedItemButtonClick(){
+        FXMLLoader fxmlLoader2 = new FXMLLoader(SchoolApplication.class.getResource("new-graded-item.fxml"));
+        Scene scene2 = null;
+        try {
+            scene2 = new Scene(fxmlLoader2.load()); //, 320, 640);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        //Gets the current selected section object (Cannot press edit graded item while no graded item or section is selected)
+        Section selectedSection;
+        int selectedSectionIndex = this.gardedItemSectionChoiceBox.getSelectionModel().getSelectedIndex();
+        selectedSection = this.sectionList.get(selectedSectionIndex);
+
+        //Pass data to controller
+        NewGradedItemController newGradedItemController = fxmlLoader2.getController();
+        newGradedItemController.initData(this, false, selectedSection );
+
+        Stage stage2 = new Stage();
+        stage2.setTitle("Edit Graded Item");
+        stage2.setScene(scene2);
+        // Specifies the modality for new window.
+        stage2.initModality(Modality.APPLICATION_MODAL);
+        stage2.show();
+    }
+
+    @FXML
+    public void onRemoveGradedItemButtonClick(){
+        Database.getDatabaseData("CALL remove_graded_item_by_id(" + gradedItemSelectedItems.get(0).getGradedItemId() + ");", "removeGradedItem", this.get_login_info(), this);
+        this.onTabGradedItemListModified(this.sectionList.get(this.gardedItemSectionChoiceBox.getSelectionModel().getSelectedIndex()).getSectionId()); //Clear and request updated data
+    }
+
     public void initialize_Student_Tab(){
         System.out.println("Initializing student tab");
 
@@ -434,7 +532,15 @@ public class SchoolController implements Connectable{
                         System.out.println("studentSelectedItems size: " + studentSelectedItems.size());
                         removeStudentButton.setDisable(false);
                         editStudentButton.setDisable(false);
-                        onStudentTableSelection();
+
+                        //Clicking on tab treated as change student selection
+                        if (studentSelectedItems.size() != 0)
+                            onStudentTableSelection();
+                        else {
+                            //Disable buttons
+                            removeStudentButton.setDisable(true);
+                            editStudentButton.setDisable(true);
+                        }
                     }
                 });
 
@@ -667,6 +773,52 @@ public class SchoolController implements Connectable{
         this.gradeBookSelectionModel = this.gradeBookTableView.getSelectionModel();
         this.gradeBookSelectionModel.setSelectionMode(SelectionMode.SINGLE);
         //this.gradeBookSelectedItems = this.gradeBookSelectionModel.getSelectedItems();
+
+        /* Remove listener for now ------
+        this.gradeBookSelectedItems.addListener(
+                new ListChangeListener<String>() {
+                    @Override
+                    public void onChanged(
+                            Change<? extends String> change) {
+                        System.out.println("gradedItemSelectedItems size: " + gradedItemSelectedItems.size());
+                        onGradedItemsTableSelection();
+                    }
+                }); */
+
+        //Adding action to the choice box
+        this.gradeBookSectionChoiceBox.getSelectionModel().selectedIndexProperty().addListener(
+                (ObservableValue<? extends Number> ov, Number old_val, Number new_val) -> {
+
+                    System.out.println("gardeBookSectionChoiceBox listener");
+
+                    //Disable buttons until student selected
+                    //this.enrolButton.setDisable(true);
+                    //this.unenrolButton.setDisable(true);
+
+                    //This method is run at tab exit
+                    //The sectionList is cleared which is treated as change in selection
+                    //This new_val is -1 at some point
+                    //It has value of -1 on tab exit and so the choice will not actually be seen
+                    int sectionSelection = new_val.intValue();
+                    if (sectionSelection==-1){
+                        //sectionSelection = 0;
+                        this.gradedItemList.clear();
+                        this.gradedItemTableView.refresh();
+                    } else {
+
+                        //Do this on ChoiceBox selection change
+                        String selectedSectionId = this.sectionIdList.get(sectionSelection);
+
+                        //Request data from database for Graded Items Table
+                        Database.getDatabaseData("CALL get_graded_item_columns_by_section(" + selectedSectionId + ");", "sectionGradedItemColumns", this.get_login_info(), this);
+                    }
+                });
+
+        //Initialize Enrolled table
+        //this.gradedItemTableViewId.setCellValueFactory(new PropertyValueFactory<>("gradedItemId"));
+        //this.gradedItemTableViewTitle.setCellValueFactory(new PropertyValueFactory<>("gradedItemTitle"));
+        //this.gradedItemTableViewDate.setCellValueFactory(new PropertyValueFactory<>("gradedItemDate"));
+        //this.gradedItemTableView.setItems(this.gradedItemList);
     }
 
     public Login get_login_info(){
@@ -720,9 +872,13 @@ public class SchoolController implements Connectable{
     }
 
     public void initialize_GradedItem_Tab(){
-        //Init buttons (Disable until student selected)
-        //this.enrolButton.setDisable(true);
-        //this.unenrolButton.setDisable(true);
+        //Clear the graded items table
+        this.gradedItemTableView.getItems().clear();
+
+        //Disable buttons
+        this.removeGradedItemButton.setDisable(true);
+        this.newGradedItemButton.setDisable(false);
+        this.editGradedItemButton.setDisable(true);
 
         //Initialize Tableview selection models
         this.gradedItemSelectionModel = this.gradedItemTableView.getSelectionModel();
@@ -736,6 +892,11 @@ public class SchoolController implements Connectable{
                             Change<? extends GradedItem> change) {
                         System.out.println("gradedItemSelectedItems size: " + gradedItemSelectedItems.size());
                         onGradedItemsTableSelection();
+
+                        //Enable buttons
+                        removeGradedItemButton.setDisable(false);
+                        newGradedItemButton.setDisable(false);
+                        editGradedItemButton.setDisable(false);
                     }
                 });
 
@@ -743,7 +904,7 @@ public class SchoolController implements Connectable{
         this.gardedItemSectionChoiceBox.getSelectionModel().selectedIndexProperty().addListener(
                 (ObservableValue<? extends Number> ov, Number old_val, Number new_val) -> {
 
-                    System.out.println("gardedItemSectionChoiceBox listener");
+                    System.out.println("gradedItemSectionChoiceBox listener");
 
                     //Disable buttons until student selected
                     //this.enrolButton.setDisable(true);
@@ -800,6 +961,7 @@ public class SchoolController implements Connectable{
         initialize_Section_Tab();
         initialize_Enrolment_Tab();
         initialize_GradedItem_Tab();
+        initialize_GradeBook_Tab();
 
         //Initialize system message listView
         //listView1.setItems(systemMessages);
@@ -887,10 +1049,18 @@ public class SchoolController implements Connectable{
         //subjectTabListView.getItems().clear(); // Empty list
 
         // Display data in the personal information pane on the subject tab
-        this.gradedItemIdData_text_1.setText(" " + this.gradedItemSelectedItems.get(0).getGradedItemId() + "\n");
-        this.gradedItemTitleData_text_2.setText(" " + this.gradedItemSelectedItems.get(0).getGradedItemTitle() + "\n");
-        this.gradedItemDateData_text_3.setText(" " + this.gradedItemSelectedItems.get(0).getGradedItemDate() + "\n");
-        this.gradedItemDescriptionData_text_4.setText(" " + this.gradedItemSelectedItems.get(0).getGradedItemDescription() + "\n");
+        if (this.gradedItemSelectedItems.size() != 0) {
+            this.gradedItemIdData_text_1.setText(" " + this.gradedItemSelectedItems.get(0).getGradedItemId() + "\n");
+            this.gradedItemTitleData_text_2.setText(" " + this.gradedItemSelectedItems.get(0).getGradedItemTitle() + "\n");
+            this.gradedItemDateData_text_3.setText(" " + this.gradedItemSelectedItems.get(0).getGradedItemDate() + "\n");
+            this.gradedItemDescriptionData_text_4.setText(" " + this.gradedItemSelectedItems.get(0).getGradedItemDescription() + "\n");
+        } else {
+            //When no graded item is selected (after item removal)
+            this.gradedItemIdData_text_1.setText(" \n");
+            this.gradedItemTitleData_text_2.setText(" \n");
+            this.gradedItemDateData_text_3.setText(" \n");
+            this.gradedItemDescriptionData_text_4.setText(" \n");
+        }
 
         // Request data from the database
         //Database.getDatabaseData(
@@ -905,7 +1075,8 @@ public class SchoolController implements Connectable{
         editStudentButton.setDisable(true);
 
         //Must clear the table or it keeps previous entries
-        studentTableView.getItems().clear(); //Empty table
+        //this.studentSelectedItems.clear();
+        //this.studentTableView.refresh();
 
         //Request data from database
         Database.getDatabaseData("SELECT * FROM Students" + ";", "Students", login_info, this);
@@ -996,33 +1167,42 @@ public class SchoolController implements Connectable{
     @FXML
     //When Subjects tab is selected
     protected void onTabGradedItemsSelection() {
-        //Disables the remove enrolment button until a student is selected in the table
-        //enrolButton.setDisable(true);
-        //unenrolButton.setDisable(true);
+        //Clear the graded items table
+        //this.gradedItemList.clear();
+        //this.gradedItemTableView.getItems().clear();
+        this.gradedItemList.clear();
+        this.gradedItemTableView.refresh();
+
+        //Disable buttons
+        this.removeGradedItemButton.setDisable(true);
+        this.newGradedItemButton.setDisable(false);
+        this.editGradedItemButton.setDisable(true);
 
         //Must clear the table or it keeps previous entries
         this.gradedItemList.clear();
 
         //Request data from database for the sections ChoiceBox
         Database.getDatabaseData("SELECT * FROM sections_info_view;", "GradedItems", login_info, this);
+    }
 
-        /*
-        //Request data from database for the sections ChoiceBox
-        Database.getDatabaseData("SELECT Sections.Section_Id, Subjects.Subject_Name, Subjects.Subject_Number, Subjects.Subject_Id, " +
-                "Sections.Section_Start_Time, Sections.Section_End_Time, Sections.Section_Days, " +
-                "Instructors.Instructor_First_Name, Instructors.Instructor_Last_Name, Instructors.Instructor_Id, Sections.Section_Room, " +
-                "COALESCE(Selection.Section_Enrolment, 0) as value " +
-                "FROM Sections " +
-                "LEFT JOIN Subjects " +
-                "ON Subjects.Subject_Id=Sections.Subject_Id " +
-                "LEFT JOIN Instructors " +
-                "ON Sections.Instructor_Id=Instructors.Instructor_Id " +
-                "LEFT JOIN (SELECT Enrolment.Section_Id, COUNT(*) AS Section_Enrolment " +
-                "FROM Enrolment " +
-                "GROUP BY Enrolment.Section_Id) AS Selection " +
-                "ON Sections.Section_Id=Selection.Section_Id;", "Enrolment", login_info, this);
+    @FXML
+    protected void onTabGradedItemListModified(String gradedItemIdModified){
+        //Disable buttons
+        this.removeGradedItemButton.setDisable(true);
+        this.newGradedItemButton.setDisable(true);
+        this.editGradedItemButton.setDisable(true);
 
-         */
+        //Clear the graded item table view
+        this.gradedItemTableView.getItems().clear();
+        this.gradedItemTableView.refresh();
+
+        //Find the index of the modified section
+        int modifiedSectionIndex =this.sectionIdList.indexOf(gradedItemIdModified);
+
+        this.onTabGradedItemsSelection(); //Re-initializes the section selection choice box
+
+        //Selects the section that was just modified (Should reload the corresponding sections from database)
+        this.gardedItemSectionChoiceBox.getSelectionModel().select(modifiedSectionIndex);
     }
 
     @FXML
@@ -1030,7 +1210,6 @@ public class SchoolController implements Connectable{
 
         //Request data from database for the sections ChoiceBox
         Database.getDatabaseData("SELECT * FROM sections_info_view;", "GradeBook", login_info, this);
-
     }
 
     @Override
@@ -1058,17 +1237,17 @@ public class SchoolController implements Connectable{
                 break;
             case "Enrolment":
                 Section.processSectionsTable(rs, sectionList);
-                Database.initialize_Section_ChoiceBox(this.enrolmentSectionChoiceBox, this.sectionList, this.sectionIdList); //Populates the Sections ChoiceBox
+                Database.initialize_Section_ChoiceBox(this.enrolmentSectionChoiceBox, this.sectionList, this.sectionIdList, 1); //Populates the Sections ChoiceBox
                 updateStatusTextFlow("Finished processing Sections Table");
                 break;
             case "GradedItems":
                 Section.processSectionsTable(rs, sectionList);
-                Database.initialize_Section_ChoiceBox(this.gardedItemSectionChoiceBox, this.sectionList, this.sectionIdList); //Populates the Sections ChoiceBox
+                Database.initialize_Section_ChoiceBox(this.gardedItemSectionChoiceBox, this.sectionList, this.sectionIdList, 1 ); //Populates the Sections ChoiceBox
                 updateStatusTextFlow("Finished processing Sections Table");
                 break;
             case "GradeBook":
                 Section.processSectionsTable(rs, sectionList);
-                Database.initialize_Section_ChoiceBox(this.gradeBookChoiceBox, this.sectionList, this.sectionIdList); //Populates the Sections ChoiceBox
+                Database.initialize_Section_ChoiceBox(this.gradeBookSectionChoiceBox, this.sectionList, this.sectionIdList, 1 ); //Populates the Sections ChoiceBox
                 updateStatusTextFlow("Finished processing Sections Table");
                 break;
             case "onStudentTableSelection":
@@ -1098,6 +1277,11 @@ public class SchoolController implements Connectable{
                 GradedItem.processGradedItemTable(rs, gradedItemList);
                 updateStatusTextFlow("Finished processing Graded Item list");
                 break;
+            case "sectionGradedItemColumns":
+                //Process the grades data for a specified section
+                GradedItem.processGradedItemColumns(rs, gradedItemList, this);
+                updateStatusTextFlow("Finished processing Graded Item columns");
+                break;
         }
     }
 
@@ -1120,5 +1304,10 @@ public class SchoolController implements Connectable{
         } else {
             alert.close();
         }
+    }
+
+    //Returns the grade book tableView
+    public TableView getGradeBookTableView(){
+        return gradeBookTableView;
     }
 }
