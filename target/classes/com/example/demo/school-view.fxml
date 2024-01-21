@@ -174,12 +174,12 @@
                                              <Insets left="15.0" right="15.0" top="10.0" />
                                           </HBox.margin>
                                        </Button>
-                                       <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="New Instructor">
+                                       <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#onNewInstructorButtonClick" text="New Instructor">
                                           <HBox.margin>
                                              <Insets right="15.0" top="10.0" />
                                           </HBox.margin>
                                        </Button>
-                                       <Button fx:id="editInstructorButton" alignment="CENTER" contentDisplay="CENTER" layoutX="157.0" layoutY="20.0" mnemonicParsing="false" text="Edit">
+                                       <Button fx:id="editInstructorButton" alignment="CENTER" contentDisplay="CENTER" layoutX="157.0" layoutY="20.0" mnemonicParsing="false" onAction="#onEditInstructorButtonClick" text="Edit">
                                           <HBox.margin>
                                              <Insets top="10.0" />
                                           </HBox.margin>

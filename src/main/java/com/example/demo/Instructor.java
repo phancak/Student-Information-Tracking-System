@@ -74,8 +74,6 @@ public class Instructor {
 
         try {
             while (rs.next()) {
-                //Subjects.Subject_Name, Subjects.Subject_Number, Sections.Section_Time, Sections.Section_Room
-                //Subjects.Subject_Name, Subjects.Subject_Number
                 String Subject_Name = new String(rs.getString(1));
                 String Subject_Number = new String(rs.getString(2));
                 String Section_Time = new String(rs.getString(3));
@@ -91,9 +89,7 @@ public class Instructor {
                 System.out.println("Created testSubject");
 
                 if (!instructorSections.contains(testString)) {
-                    //System.out.println("Adding enrolled class to list");
                     instructorSections.add(testString);
-                    //System.out.println("Added testString to list");
                 }
             }
         } catch (SQLException e) {

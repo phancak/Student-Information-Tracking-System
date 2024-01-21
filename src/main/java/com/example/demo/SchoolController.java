@@ -359,6 +359,50 @@ public class SchoolController implements Connectable{
     }
 
     @FXML
+    public void onNewInstructorButtonClick(){
+        FXMLLoader fxmlLoader2 = new FXMLLoader(SchoolApplication.class.getResource("new-instructor.fxml"));
+        Scene scene2 = null;
+        try {
+            scene2 = new Scene(fxmlLoader2.load()); //, 320, 640);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        //Pass data to controller
+        NewInstructorController newInstructorController = fxmlLoader2.getController();
+        newInstructorController.initData(this, true);
+
+        Stage stage2 = new Stage();
+        stage2.setTitle("New Instructor");
+        stage2.setScene(scene2);
+        // Specifies the modality for new window.
+        stage2.initModality(Modality.APPLICATION_MODAL);
+        stage2.show();
+    }
+
+    @FXML
+    public void onEditInstructorButtonClick(){
+        FXMLLoader fxmlLoader2 = new FXMLLoader(SchoolApplication.class.getResource("new-instructor.fxml"));
+        Scene scene2 = null;
+        try {
+            scene2 = new Scene(fxmlLoader2.load()); //, 320, 640);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        //Pass data to controller
+        NewInstructorController newInstructorController = fxmlLoader2.getController();
+        newInstructorController.initData(this, false);
+
+        Stage stage2 = new Stage();
+        stage2.setTitle("Edit Instructor");
+        stage2.setScene(scene2);
+        // Specifies the modality for new window.
+        stage2.initModality(Modality.APPLICATION_MODAL);
+        stage2.show();
+    }
+
+    @FXML
     public void onRemoveInstructorButtonClick(){
         Database.getDatabaseData("CALL remove_instructor_by_id(" + instructorSelectedItems.get(0).getInstructorId() + ");", "removeInstructor", this.get_login_info(), this);
         this.onTabInstructorsSelection(); //Clear and request updated data
@@ -650,9 +694,17 @@ public class SchoolController implements Connectable{
                         System.out.println(
                                 "Selection changed: " + change.getList());
                         System.out.println("instructorSelectedItems size: " + subjectsSelectedItems.size());
-                        removeSubjectButton.setDisable(false);
-                        editSubjectButton.setDisable(false);
-                        onSubjectsTableSelection();
+
+                        //Tests if any subject selection has been made
+                        if (subjectsSelectedItems.size() > 0) {
+                            removeSubjectButton.setDisable(false);
+                            editSubjectButton.setDisable(false);
+                            onSubjectsTableSelection();
+                        } else {
+                            //Disables the remove student button until a student is selected in the table
+                            removeSubjectButton.setDisable(true);
+                            editSubjectButton.setDisable(true);
+                        }
                     }
                 });
 
