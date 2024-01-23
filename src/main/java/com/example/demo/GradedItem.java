@@ -6,10 +6,12 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.util.Callback;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Objects;
 
 public class GradedItem {
@@ -21,6 +23,8 @@ public class GradedItem {
     private SimpleStringProperty gradedItemDate;
     private SimpleStringProperty gradedItemAverage;
     private SimpleStringProperty gradedItemString;
+
+    public static String[][] gradeContainer;
 
     public GradedItem() {
         this.gradedItemId = new SimpleStringProperty(this, "gradedItemId", "n/a");
@@ -64,11 +68,21 @@ public class GradedItem {
         }
     }
 
-    public static void processGradedItemColumns(ResultSet rs, ObservableList<GradedItem> gradedItemList, SchoolController schoolController){
+    public static void processGradedItemColumns(ResultSet rs, TableView gradeBookTableView, ObservableList<ObservableList> gradeBookData,
+                                                ArrayList<ArrayList<Double>> sectionGradeData, ArrayList<String> sectionGradeDataStudentList){
+        //ArrayList<Double> sectionStudentGradeData = new ArrayList<>(); //Grades for a specific student (row in sectionGradeData)
+        sectionGradeData.clear(); //Clears the array for new section selection
+        sectionGradeDataStudentList.clear(); //Clears the student list from last section selection
+
         try {
             //Clear the grade book table
-            schoolController.getGradeBookTableView().getItems().clear();
-            schoolController.getGradeBookTableView().getColumns().clear();
+            //schoolController.getGradeBookTableView().getItems().clear();
+            //schoolController.getGradeBookTableView().getColumns().clear();
+            gradeBookTableView.getItems().clear();
+            gradeBookTableView.getColumns().clear();
+
+            //gradeContainer = new String[rs.getMetaData().getColumnCount()][rs.getMetaData().getColumnCount()];
+            //gradeContainer.
 
             for (int i = 0; i < rs.getMetaData().getColumnCount(); i++) {
                 //We are using non property style for making dynamic table
@@ -80,28 +94,56 @@ public class GradedItem {
                     }
                 });
 
-                schoolController.getGradeBookTableView().getColumns().addAll(col);
+                gradeBookTableView.getColumns().addAll(col);
                 System.out.println("Column [" + i + "] ");
             }
 
-            /**
-             * ******************************
-             * Data added to ObservableList *
-             *******************************
-             */
+            String receivedDataValue;
+            String studentIdString = "-- Initial Name Value --";
+
             while (rs.next()) {
                 //Iterate Row
                 ObservableList<String> row = FXCollections.observableArrayList();
+                ArrayList<Double> sectionStudentGradeData = new ArrayList<>(); //Grades for a specific student (row in sectionGradeData)
                 for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
                     //Iterate Column
-                    row.add(rs.getString(i));
+                    receivedDataValue = rs.getString(i);
+                    if (receivedDataValue == null) {
+                        receivedDataValue = "null";
+                    }
+
+                    System.out.println(receivedDataValue);
+                    row.add(receivedDataValue);
+
+                    if (i>2) {
+                        if (receivedDataValue != "null"){
+                            sectionStudentGradeData.add(Double.parseDouble(receivedDataValue)); //Records grades
+                        } else {
+                            sectionStudentGradeData.add((double)999);
+                        }
+                    }
+
+                    //Records the current student id number
+                    if(i == 1){
+                        studentIdString = receivedDataValue;
+                    }
+
+                    //Records the student id and name into section student list
+                    if(i == 2){
+                        sectionGradeDataStudentList.add("Id: " + studentIdString + ", Student Name: " + receivedDataValue);
+                    }
                 }
-                System.out.println("Row [1] added " + row);
-                schoolController.gradeBookData.add(row);
+                System.out.println("Row [1] added " + row); //gradeBookData
+                //schoolController.gradeBookData.add(row);
+                gradeBookData.add(row); //Adds the row to sectionGradeData
+                sectionGradeData.add(sectionStudentGradeData); //Adds the specific student row of grades to the section student grades array
+
+                //Clear sectionStudentGradeData for the next row
+                //sectionStudentGradeData.clear();
             }
 
             //FINALLY ADDED TO TableView
-            schoolController.getGradeBookTableView().setItems(schoolController.gradeBookData);
+            gradeBookTableView.setItems(gradeBookData);
         } catch (SQLException e) {
             e.printStackTrace();
         }
