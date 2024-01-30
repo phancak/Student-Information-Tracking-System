@@ -19,10 +19,14 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.Optional;
+import java.util.Queue;
 
 public class SchoolController implements Connectable{
     private Login login_info = new Login("root","12345678"); //Initialize login info //Database login information
+
+    Queue<String> statusMessageQueue = new LinkedList<>(); //Tracks status message
 
     @FXML private TextFlow statusTextflow1 = new TextFlow();
     @FXML private Text statusText1 = new Text("\n");
@@ -119,6 +123,8 @@ public class SchoolController implements Connectable{
     @FXML private TableColumn gradedItemTableViewId = new TableColumn<>("Id");
     @FXML private TableColumn gradedItemTableViewTitle = new TableColumn<>("Title");
     @FXML private TableColumn gradedItemTableViewDate = new TableColumn<>("Date");
+    //@FXML private TableColumn gradeBookTableViewStudentId = new TableColumn<>("Id");
+    //@FXML private TableColumn gradeBookTableViewStudentName = new TableColumn<>("Name");
 
     // Students Tab Personal Information Pane
     @FXML private TextFlow studentTab_PersonalInfo_LeftTextFlow = new TextFlow();
@@ -193,10 +199,9 @@ public class SchoolController implements Connectable{
 
     //Grade Book Pane
     @FXML ChoiceBox gradeBookSectionChoiceBox = new ChoiceBox(); //Choice Box (Section choice box)
-    ArrayList<ArrayList<Double>> sectionGradeData = new ArrayList<ArrayList<Double>>();
-    ArrayList<String> sectionGradeDataStudentList = new ArrayList<String>(); //List of student names and ids
-    @FXML private Button plotGradesButton = new Button();
-    @FXML private Button viewGradeDetailsButton = new Button();
+    //@FXML private Button enrolButton = new Button();
+    //@FXML private Button unenrolButton = new Button();
+    //public ArrayList<String> sectionIdList = new ArrayList<String>();
 
     //Section Tab Buttons
     @FXML public Button sectionEnrolmentViewButton = new Button();
@@ -305,7 +310,7 @@ public class SchoolController implements Connectable{
         FXMLLoader fxmlLoader2 = new FXMLLoader(SchoolApplication.class.getResource("new-student.fxml"));
         Scene scene2 = null;
         try {
-            scene2 = new Scene(fxmlLoader2.load());
+            scene2 = new Scene(fxmlLoader2.load()); //, 320, 640);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -336,7 +341,7 @@ public class SchoolController implements Connectable{
             //Pass data to controller
             //NewStudentController newStudentController = fxmlLoader2.getController();
             //newStudentController.initData(this);
-            scene2 = new Scene(fxmlLoader2.load());
+            scene2 = new Scene(fxmlLoader2.load()); //, 320, 640);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -347,50 +352,6 @@ public class SchoolController implements Connectable{
 
         Stage stage2 = new Stage();
         stage2.setTitle("New Student");
-        stage2.setScene(scene2);
-        // Specifies the modality for new window.
-        stage2.initModality(Modality.APPLICATION_MODAL);
-        stage2.show();
-    }
-
-    @FXML
-    public void onNewInstructorButtonClick(){
-        FXMLLoader fxmlLoader2 = new FXMLLoader(SchoolApplication.class.getResource("new-instructor.fxml"));
-        Scene scene2 = null;
-        try {
-            scene2 = new Scene(fxmlLoader2.load());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        //Pass data to controller
-        NewInstructorController newInstructorController = fxmlLoader2.getController();
-        newInstructorController.initData(this, true);
-
-        Stage stage2 = new Stage();
-        stage2.setTitle("New Instructor");
-        stage2.setScene(scene2);
-        // Specifies the modality for new window.
-        stage2.initModality(Modality.APPLICATION_MODAL);
-        stage2.show();
-    }
-
-    @FXML
-    public void onEditInstructorButtonClick(){
-        FXMLLoader fxmlLoader2 = new FXMLLoader(SchoolApplication.class.getResource("new-instructor.fxml"));
-        Scene scene2 = null;
-        try {
-            scene2 = new Scene(fxmlLoader2.load());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        //Pass data to controller
-        NewInstructorController newInstructorController = fxmlLoader2.getController();
-        newInstructorController.initData(this, false);
-
-        Stage stage2 = new Stage();
-        stage2.setTitle("Edit Instructor");
         stage2.setScene(scene2);
         // Specifies the modality for new window.
         stage2.initModality(Modality.APPLICATION_MODAL);
@@ -420,7 +381,7 @@ public class SchoolController implements Connectable{
         FXMLLoader fxmlLoader2 = new FXMLLoader(SchoolApplication.class.getResource("enrolment-view.fxml"));
         Scene scene2 = null;
         try {
-            scene2 = new Scene(fxmlLoader2.load());
+            scene2 = new Scene(fxmlLoader2.load()); //, 320, 640);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -442,7 +403,7 @@ public class SchoolController implements Connectable{
         FXMLLoader fxmlLoader2 = new FXMLLoader(SchoolApplication.class.getResource("new-section.fxml"));
         Scene scene2 = null;
         try {
-            scene2 = new Scene(fxmlLoader2.load());
+            scene2 = new Scene(fxmlLoader2.load()); //, 320, 640);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -464,7 +425,7 @@ public class SchoolController implements Connectable{
         FXMLLoader fxmlLoader2 = new FXMLLoader(SchoolApplication.class.getResource("new-section.fxml"));
         Scene scene2 = null;
         try {
-            scene2 = new Scene(fxmlLoader2.load());
+            scene2 = new Scene(fxmlLoader2.load()); //, 320, 640);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -486,7 +447,7 @@ public class SchoolController implements Connectable{
         FXMLLoader fxmlLoader2 = new FXMLLoader(SchoolApplication.class.getResource("new-graded-item.fxml"));
         Scene scene2 = null;
         try {
-            scene2 = new Scene(fxmlLoader2.load());
+            scene2 = new Scene(fxmlLoader2.load()); //, 320, 640);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -520,7 +481,7 @@ public class SchoolController implements Connectable{
         FXMLLoader fxmlLoader2 = new FXMLLoader(SchoolApplication.class.getResource("new-graded-item.fxml"));
         Scene scene2 = null;
         try {
-            scene2 = new Scene(fxmlLoader2.load());
+            scene2 = new Scene(fxmlLoader2.load()); //, 320, 640);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -536,31 +497,6 @@ public class SchoolController implements Connectable{
 
         Stage stage2 = new Stage();
         stage2.setTitle("Edit Graded Item");
-        stage2.setScene(scene2);
-        // Specifies the modality for new window.
-        stage2.initModality(Modality.APPLICATION_MODAL);
-        stage2.show();
-    }
-
-    @FXML
-    public void onPlotGradesButtonClick(){
-        FXMLLoader fxmlLoader2 = new FXMLLoader(SchoolApplication.class.getResource("grade-plot.fxml"));
-        Scene scene2 = null;
-        try {
-            scene2 = new Scene(fxmlLoader2.load());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        //Gets the current selected student
-        int selectedStudentIndex = this.gradeBookTableView.getSelectionModel().getSelectedIndex();
-
-        //Pass data to controller
-        GradePlotController gradePlotController = fxmlLoader2.getController();
-        gradePlotController.initData(sectionGradeData, sectionGradeDataStudentList, selectedStudentIndex );
-
-        Stage stage2 = new Stage();
-        stage2.setTitle("Student Grade Plot");
         stage2.setScene(scene2);
         // Specifies the modality for new window.
         stage2.initModality(Modality.APPLICATION_MODAL);
@@ -714,17 +650,9 @@ public class SchoolController implements Connectable{
                         System.out.println(
                                 "Selection changed: " + change.getList());
                         System.out.println("instructorSelectedItems size: " + subjectsSelectedItems.size());
-
-                        //Tests if any subject selection has been made
-                        if (subjectsSelectedItems.size() > 0) {
-                            removeSubjectButton.setDisable(false);
-                            editSubjectButton.setDisable(false);
-                            onSubjectsTableSelection();
-                        } else {
-                            //Disables the remove student button until a student is selected in the table
-                            removeSubjectButton.setDisable(true);
-                            editSubjectButton.setDisable(true);
-                        }
+                        removeSubjectButton.setDisable(false);
+                        editSubjectButton.setDisable(false);
+                        onSubjectsTableSelection();
                     }
                 });
 
@@ -814,20 +742,17 @@ public class SchoolController implements Connectable{
                     //It has value of -1 on tab exit and so the choice will not actually be seen
                     int sectionSelection = new_val.intValue();
                     if (sectionSelection==-1){
-                        //Disable buttons until student selected
-                        this.enrolButton.setDisable(true);
-                        this.unenrolButton.setDisable(true);
-                        //sectionSelection = 0;
-                    } else {
-                        //Do this on ChoiceBox selection change
-                        String selectedSectionId = this.sectionIdList.get(sectionSelection);
-
-                        //Request data from database for Enrolled Tables
-                        Database.getDatabaseData("CALL get_students_from_section(" + selectedSectionId + ");", "sectionEnrolledStudents", this.get_login_info(), this);
-
-                        //Request data from database for Not Enrolled Tables
-                        Database.getDatabaseData("CALL get_students_not_from_section(" + selectedSectionId + ");", "sectionNotenrolledStudents", this.get_login_info(), this);
+                        sectionSelection = 0;
                     }
+
+                    //Do this on ChoiceBox selection change
+                    String selectedSectionId = this.sectionIdList.get(sectionSelection);
+
+                    //Request data from database for Enrolled Tables
+                    Database.getDatabaseData("CALL get_students_from_section(" + selectedSectionId + ");", "sectionEnrolledStudents", this.get_login_info(), this);
+
+                    //Request data from database for Not Enrolled Tables
+                    Database.getDatabaseData("CALL get_students_not_from_section(" + selectedSectionId + ");", "sectionNotenrolledStudents", this.get_login_info(), this);
                 });
 
         //Initialize Enrolled table
@@ -867,8 +792,8 @@ public class SchoolController implements Connectable{
                     System.out.println("gardeBookSectionChoiceBox listener");
 
                     //Disable buttons until student selected
-                    this.plotGradesButton.setDisable(false);
-                    this.viewGradeDetailsButton.setDisable(false);
+                    //this.enrolButton.setDisable(true);
+                    //this.unenrolButton.setDisable(true);
 
                     //This method is run at tab exit
                     //The sectionList is cleared which is treated as change in selection
@@ -991,18 +916,14 @@ public class SchoolController implements Connectable{
                     //It has value of -1 on tab exit and so the choice will not actually be seen
                     int sectionSelection = new_val.intValue();
                     if (sectionSelection==-1){
-                        //Disable buttons
-                        this.removeGradedItemButton.setDisable(true);
-                        this.newGradedItemButton.setDisable(false);
-                        this.editGradedItemButton.setDisable(true);
-                        //sectionSelection = 0;
-                    } else {
-                        //Do this on ChoiceBox selection change
-                        String selectedSectionId = this.sectionIdList.get(sectionSelection);
-
-                        //Request data from database for Graded Items Table
-                        Database.getDatabaseData("CALL get_graded_items_by_section(" + selectedSectionId + ");", "sectionGradedItems", this.get_login_info(), this);
+                        sectionSelection = 0;
                     }
+
+                    //Do this on ChoiceBox selection change
+                    String selectedSectionId = this.sectionIdList.get(sectionSelection);
+
+                    //Request data from database for Graded Items Table
+                    Database.getDatabaseData("CALL get_graded_items_by_section(" + selectedSectionId + ");", "sectionGradedItems", this.get_login_info(), this);
                 });
 
         //Initialize Enrolled table
@@ -1286,8 +1207,6 @@ public class SchoolController implements Connectable{
 
     @FXML
     protected void onTabGradeBookSelection() {
-        this.plotGradesButton.setDisable(true);
-        this.viewGradeDetailsButton.setDisable(true);
 
         //Request data from database for the sections ChoiceBox
         Database.getDatabaseData("SELECT * FROM sections_info_view;", "GradeBook", login_info, this);
@@ -1360,8 +1279,7 @@ public class SchoolController implements Connectable{
                 break;
             case "sectionGradedItemColumns":
                 //Process the grades data for a specified section
-                GradedItem.processGradedItemColumns(rs, this.getGradeBookTableView(), this.gradeBookData, this.sectionGradeData,
-                        this.sectionGradeDataStudentList);
+                GradedItem.processGradedItemColumns(rs, gradedItemList, this);
                 updateStatusTextFlow("Finished processing Graded Item columns");
                 break;
         }

@@ -81,10 +81,12 @@ public class NewSectionController implements Connectable{
     public void ProcessData(ResultSet rs, String opCode) {
         switch (opCode) {
             case "requestSubjectData":
+                //System.out.println("Processing Countries table");
                 this.processSubjectData(rs, this.subjectList);
                 this.schoolController.updateStatusTextFlow("Processed Subject Data");
                 break;
             case "requestInstructorData":
+                //System.out.println("Processing Countries table");
                 this.processInstructorData(rs, this.instructorList);
                 this.schoolController.updateStatusTextFlow("Processed Subject Number Data");
                 break;

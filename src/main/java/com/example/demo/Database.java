@@ -42,6 +42,7 @@ public class Database {
             // Perform database operations using the connection...
             stmt = connection.createStatement();
             System.out.println("Executing statement: " + sql);
+            //String sql = "SELECT * FROM "+ tableName + ";"; //SQL Command
 
             //stmt.execute - returns true if the first result is a ResultSet object;
             //false if it is an update count or there are no results
