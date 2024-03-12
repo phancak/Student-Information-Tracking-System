@@ -6,7 +6,6 @@ import javafx.collections.ObservableList;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Objects;
 
 public class Student {
 
@@ -113,7 +112,7 @@ public class Student {
             e.printStackTrace();
         }
     }
-
+/*
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -127,7 +126,7 @@ public class Student {
         if (!Objects.equals(studentDateOfBirth, student.studentDateOfBirth))
             return false;
         return Objects.equals(studentHomeTown, student.studentHomeTown);
-    }
+    }*/
 
     @Override
     public int hashCode() {

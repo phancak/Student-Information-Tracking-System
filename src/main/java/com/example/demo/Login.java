@@ -2,15 +2,6 @@ package com.example.demo;
 
 public class Login {
     private String user_name;
-
-    public String getPass() {
-        return pass;
-    }
-
-    public void setPass(String pass) {
-        this.pass = pass;
-    }
-
     private String pass;
 
     Login(){
@@ -29,5 +20,13 @@ public class Login {
 
     public void setUser_name(String user_name) {
         this.user_name = user_name;
+    }
+
+    public String getPass() {
+        return pass;
+    }
+
+    public void setPass(String pass) {
+        this.pass = pass;
     }
 }

@@ -6,7 +6,6 @@ import javafx.collections.ObservableList;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Objects;
 
 public class Instructor {
 
@@ -169,6 +168,7 @@ public class Instructor {
         this.instructorEducation.set(instructorEducation);
     }
 
+    /*
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -182,7 +182,7 @@ public class Instructor {
         if (!Objects.equals(instructorSpecialization, that.instructorSpecialization))
             return false;
         return Objects.equals(instructorEducation, that.instructorEducation);
-    }
+    }*/
 
     @Override
     public int hashCode() {

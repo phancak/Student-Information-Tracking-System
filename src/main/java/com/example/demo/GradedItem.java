@@ -69,10 +69,12 @@ public class GradedItem {
     }
 
     public static void processGradedItemColumns(ResultSet rs, TableView gradeBookTableView, ObservableList<ObservableList> gradeBookData,
-                                                ArrayList<ArrayList<Double>> sectionGradeData, ArrayList<String> sectionGradeDataStudentList){
+                                                ArrayList<ArrayList<Double>> sectionGradeData, ArrayList<String> sectionGradeDataStudentList,
+                                                ArrayList<String> sectionGradeDataStudentIdList){
         //ArrayList<Double> sectionStudentGradeData = new ArrayList<>(); //Grades for a specific student (row in sectionGradeData)
         sectionGradeData.clear(); //Clears the array for new section selection
         sectionGradeDataStudentList.clear(); //Clears the student list from last section selection
+        sectionGradeDataStudentIdList.clear();
 
         try {
             //Clear the grade book table
@@ -115,6 +117,7 @@ public class GradedItem {
                     System.out.println(receivedDataValue);
                     row.add(receivedDataValue);
 
+                    //Collects student grade data into separate arrays for plotting purposes
                     if (i>2) {
                         if (receivedDataValue != "null"){
                             sectionStudentGradeData.add(Double.parseDouble(receivedDataValue)); //Records grades
@@ -131,6 +134,7 @@ public class GradedItem {
                     //Records the student id and name into section student list
                     if(i == 2){
                         sectionGradeDataStudentList.add("Id: " + studentIdString + ", Student Name: " + receivedDataValue);
+                        sectionGradeDataStudentIdList.add(studentIdString);
                     }
                 }
                 System.out.println("Row [1] added " + row); //gradeBookData
@@ -149,12 +153,54 @@ public class GradedItem {
         }
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof GradedItem gradedItem)) return false;
+    public static void processGradeDetailsColumns(ResultSet rs, TableView gradeBookTableView, ObservableList<ObservableList> gradeBookData){
 
-        return Objects.equals(gradedItemId, gradedItem.gradedItemId);
+        try {
+            //Clear the grade book table
+            gradeBookTableView.getItems().clear();
+            gradeBookTableView.getColumns().clear();
+
+            for (int i = 0; i < rs.getMetaData().getColumnCount(); i++) {
+                //We are using non property style for making dynamic table
+                final int j = i;
+                TableColumn col = new TableColumn(rs.getMetaData().getColumnName(i + 1));
+                col.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
+                    public ObservableValue<String> call(TableColumn.CellDataFeatures<ObservableList, String> param) {
+                        return new SimpleStringProperty(param.getValue().get(j).toString());
+                    }
+                });
+
+                gradeBookTableView.getColumns().addAll(col);
+                System.out.println("Column [" + i + "] ");
+            }
+
+            String receivedDataValue;
+            String studentIdString = "-- Initial Name Value --";
+
+            while (rs.next()) {
+                //Iterate Row
+                ObservableList<String> row = FXCollections.observableArrayList();
+                ArrayList<Double> sectionStudentGradeData = new ArrayList<>(); //Grades for a specific student (row in sectionGradeData)
+                for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
+                    //Iterate Column
+                    receivedDataValue = rs.getString(i);
+                    if (receivedDataValue == null) {
+                        receivedDataValue = "null";
+                    }
+
+                    System.out.println(receivedDataValue);
+                    row.add(receivedDataValue);
+                }
+
+                System.out.println("Row [1] added " + row); //gradeBookData
+                gradeBookData.add(row); //Adds the row to sectionGradeData
+            }
+
+            //Add to TableView
+            gradeBookTableView.setItems(gradeBookData);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

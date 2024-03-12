@@ -52,14 +52,14 @@ public class Grade {
             e.printStackTrace();
         }
     }
-
+/*
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Grade grade)) return false;
 
         return Objects.equals(gradeId, grade.gradeId);
-    }
+    }*/
 
     @Override
     public int hashCode() {

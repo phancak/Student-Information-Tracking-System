@@ -26,11 +26,16 @@
            <MenuItem mnemonicParsing="false" onAction="#onQuitMenuItem" text="Quit" />
          </items>
        </Menu>
-       <Menu mnemonicParsing="false" text="Edit">
+       <Menu mnemonicParsing="false" text="Database">
          <items>
-           <MenuItem mnemonicParsing="false" text="Delete" />
+           <MenuItem fx:id="databaseLoginMenuItem" mnemonicParsing="false" onAction="#onLogin" text="Login" />
          </items>
        </Menu>
+         <Menu mnemonicParsing="false" text="Edit">
+            <items>
+               <MenuItem mnemonicParsing="false" text="Delete" />
+            </items>
+         </Menu>
        <Menu mnemonicParsing="false" text="Help">
          <items>
            <MenuItem mnemonicParsing="false" text="About" />
@@ -51,10 +56,10 @@
                         <children>
                            <TableView fx:id="studentTableView" prefHeight="388.0" prefWidth="353.0">
                              <columns>
-                               <TableColumn fx:id="studentTableViewIdColumn" prefWidth="75.0" text="Student Id" />
-                                 <TableColumn fx:id="studentTableViewFirstNameColumn" prefWidth="75.0" text="First Name" />
-                                 <TableColumn fx:id="studentTableViewLastNameColumn" prefWidth="75.0" text="Last Name" />
-                                 <TableColumn fx:id="studentTableViewDofBColumn" prefWidth="91.0" text="DofB" />
+                               <TableColumn fx:id="studentTableViewIdColumn" prefWidth="35.0" text="Id" />
+                                 <TableColumn fx:id="studentTableViewFirstNameColumn" prefWidth="95.0" text="First Name" />
+                                 <TableColumn fx:id="studentTableViewLastNameColumn" prefWidth="95.0" text="Last Name" />
+                                 <TableColumn fx:id="studentTableViewDofBColumn" prefWidth="90.0" text="DofB" />
                              </columns>
                               <HBox.margin>
                                  <Insets right="15.0" />
@@ -124,8 +129,8 @@
                         <children>
                            <TableView fx:id="instructorTableView" prefHeight="388.0" prefWidth="353.0">
                               <columns>
-                                 <TableColumn fx:id="instructorTableViewIdColumn" prefWidth="75.0" text="Instructor Id" />
-                                 <TableColumn fx:id="instructorTableViewFirstNameColumn" prefWidth="75.0" text="First Name" />
+                                 <TableColumn fx:id="instructorTableViewIdColumn" prefWidth="40.0" text="Id" />
+                                 <TableColumn fx:id="instructorTableViewFirstNameColumn" prefWidth="110.0" text="First Name" />
                                  <TableColumn fx:id="instructorTableViewLastNameColumn" prefWidth="75.0" text="Last Name" />
                                  <TableColumn fx:id="instructorTableViewDofBColumn" prefWidth="91.0" text="DofB" />
                               </columns>
@@ -204,8 +209,8 @@
                         <children>
                            <TableView fx:id="subjectsTableView" prefHeight="388.0" prefWidth="353.0">
                               <columns>
-                                 <TableColumn fx:id="subjectTableViewIdColumn" prefWidth="75.0" text="Subject Id" />
-                                 <TableColumn fx:id="subjectTableViewNameColumn" prefWidth="93.0" text="Name" />
+                                 <TableColumn fx:id="subjectTableViewIdColumn" prefWidth="38.0" text="id" />
+                                 <TableColumn fx:id="subjectTableViewNameColumn" prefWidth="130.0" text="Name" />
                                  <TableColumn fx:id="subjectTableViewNumberColumn" prefWidth="72.0" text="Number" />
                                  <TableColumn fx:id="subjectTableViewNoSectionsColumn" prefWidth="74.0" text="Sections" />
                               </columns>
@@ -254,12 +259,12 @@
                                              <Insets left="15.0" right="15.0" top="10.0" />
                                           </HBox.margin>
                                        </Button>
-                                       <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="New Subject">
+                                       <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#onNewSubjectButtonClick" text="New Subject">
                                           <HBox.margin>
                                              <Insets right="15.0" top="10.0" />
                                           </HBox.margin>
                                        </Button>
-                                       <Button fx:id="editSubjectButton" mnemonicParsing="false" text="Edit">
+                                       <Button fx:id="editSubjectButton" mnemonicParsing="false" onAction="#onEditSubjectButtonClick" text="Edit">
                                           <HBox.margin>
                                              <Insets top="10.0" />
                                           </HBox.margin>
@@ -370,8 +375,8 @@
                                                          <TableView fx:id="enrolmentNotenrolledTableView" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                                            <columns>
                                                              <TableColumn fx:id="enrolmentNotenrolledTableViewStudentIdColumn" editable="false" prefWidth="44.0" text="Id" />
-                                                             <TableColumn fx:id="enrolmentNotenrolledTableViewStudentNameColumn" editable="false" prefWidth="160.0" text="Name" />
-                                                               <TableColumn fx:id="enrolmentNotenrolledTableViewStudentDofBColumn" editable="false" prefWidth="72.0" text="D of B" />
+                                                             <TableColumn fx:id="enrolmentNotenrolledTableViewStudentNameColumn" editable="false" prefWidth="140.0" text="Name" />
+                                                               <TableColumn fx:id="enrolmentNotenrolledTableViewStudentDofBColumn" editable="false" prefWidth="90.0" text="D of B" />
                                                            </columns>
                                                          </TableView>
                                                       </children>
@@ -414,8 +419,8 @@
                                                          <TableView fx:id="enrolmentEnrolledTableView" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                                             <columns>
                                                                <TableColumn fx:id="enrolmentEnrolledTableViewStudentIdColumn" prefWidth="44.0" text="Id" />
-                                                               <TableColumn fx:id="enrolmentEnrolledTableViewStudentNameColumn" prefWidth="160.0" text="Name" />
-                                                               <TableColumn fx:id="enrolmentEnrolledTableViewStudentDofBColumn" prefWidth="72.0" text="D of B" />
+                                                               <TableColumn fx:id="enrolmentEnrolledTableViewStudentNameColumn" prefWidth="143.0" text="Name" />
+                                                               <TableColumn fx:id="enrolmentEnrolledTableViewStudentDofBColumn" prefWidth="90.0" text="D of B" />
                                                             </columns>
                                                          </TableView>
                                                       </children>
@@ -580,7 +585,7 @@
                                              <Insets left="15.0" right="15.0" />
                                           </HBox.margin>
                                        </Button>
-                                       <Button layoutX="25.0" layoutY="10.0" mnemonicParsing="false" text="View Grade Details" />
+                                       <Button fx:id="viewGradeDetailsButton" layoutX="25.0" layoutY="10.0" mnemonicParsing="false" onAction="#onViewGradeDetailsButtonClick" text="View Grade Details" />
                                     </children>
                                  </HBox>
                               </children>

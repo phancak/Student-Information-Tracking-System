@@ -18,6 +18,9 @@ public class Database {
     public static int getDatabaseData(String sql, String opCode, Login login_info, Connectable connectable){
         System.out.println("Starting Database Connection");
 
+        // Obtain the call stack to trace calling method
+        StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
+
         //Display Database Connection Alert
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Alert");
@@ -66,9 +69,23 @@ public class Database {
         } catch (CommunicationsException e) {
             //Failed at connection constructor
             connectable.getSchoolController().updateStatusTextFlow("Connection to database failed");
-            //System.err.println("CommunicationsException: " + e.getMessage());
         } catch (SQLException e) {
-            e.printStackTrace();
+            //Finds the calling method
+            if (stackTrace.length > 2) {
+                //The first element (index 0) is the current method (getStackTrace)
+                //The second element (index 1) is the method that called the current method (exampleMethod)
+                StackTraceElement callingMethod = stackTrace[2];
+                //connectable.getSchoolController().updateStatusTextFlow("Connection to database failed");
+                System.out.println("Calling method: " + callingMethod.getClassName() + "." + callingMethod.getMethodName());
+
+                //Reopens the login window if the login button is the caller
+                if (callingMethod.getMethodName().equals("onDatabaseLoginButton")){
+                    connectable.getSchoolController().updateStatusTextFlow("Login error, please try again");
+                    connectable.getSchoolController().onLogin();
+                }
+            } else {
+                System.out.println("No calling method information available.");
+            }
         } finally {
             // Close the connection when done
             if (connection != null) {

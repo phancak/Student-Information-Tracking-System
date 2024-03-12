@@ -98,7 +98,7 @@ public class EnrolmentViewController implements Connectable{
 
                     //Request data from database
                     Database.getDatabaseData("CALL get_students_from_section(" + selectedSectionId + ");",
-                            "sectionStudents", this.schoolController.get_login_info(), this);
+                            "onStudentTableSelection", this.schoolController.get_login_info(), this);
                 });
     }
 
