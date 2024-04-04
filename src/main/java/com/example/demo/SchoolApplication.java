@@ -12,7 +12,7 @@ public class SchoolApplication extends Application {
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(SchoolApplication.class.getResource("school-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 700, 600);
-        stage.setTitle("School");
+        stage.setTitle("Collenwood School | JK-12 Independent School");
         stage.setScene(scene);
         stage.show();
     }
