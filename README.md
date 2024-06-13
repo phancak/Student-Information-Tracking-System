@@ -22,7 +22,7 @@ The system consists of java based client running on a workstation, and a databas
 ![System_Architecture.png](System_Architecture.png)
 Further detailed inner working of the java based client application are shown along with the database and the data analysis medium.
 
-### - - Database Diagram
+### - Database Diagram
 ![Screenshot 2024-03-12 at 4.00.04 PM.png](Screenshot%202024-03-12%20at%204.00.04%20PM.png)
 Detailed diagram of the database tables used to store student data.
 
@@ -46,15 +46,98 @@ Below are shown a series of sample screenshots of the java based client applicat
 10. [FAQ](#faq)
 
 ## Installation
-Step-by-step instructions on how to get the development environment running.
+Follow these steps to set up and run the Java application with a MySQL database:
+
+### Prerequisites
+
+1. **Java Development Kit (JDK)**: Ensure you have JDK installed. You can download it from [here](https://www.oracle.com/java/technologies/javase-jdk11-downloads.html).
+
+2. **MySQL Database**: Install MySQL Server. You can download it from [here](https://dev.mysql.com/downloads/mysql/).
+
+3. **Maven**: Ensure you have Maven installed for managing the project dependencies. You can download it from [here](https://maven.apache.org/download.cgi).
+
+### Step-by-Step Instructions
+
+1. **Clone the Repository**:
+    ```sh
+    git clone https://github.com/phancak/Student-Information-Tracking-System-Java-Client.git
+    cd repo
+    ```
+
+2. **Set Up MySQL Database**:
+    - Start the MySQL server.
+    - Create a new database:
+        ```sql
+        CREATE DATABASE School;
+        ```
+    - Create a new 'root' user with pass '12345678' and grant necessary privileges if it does not already exist:
+        ```sql
+        CREATE USER 'root'@'localhost' IDENTIFIED BY '12345678';
+        GRANT ALL PRIVILEGES ON School.* TO 'root'@'localhost';
+        FLUSH PRIVILEGES;
+        ```
+    - Run 'School_Init.sql' to setup database tables, procedures, and views
+    - Run 'School_Init.sql' to initialize the database with sample data
+
+
+3. **Configure the Application**:
+    - Update the `application.properties` (or `application.yml` if you're using YAML) file with your MySQL database configuration:
+        ```properties
+        spring.datasource.url=jdbc:mysql://localhost:3306/my_database
+        spring.datasource.username=my_user
+        spring.datasource.password=my_password
+        spring.jpa.hibernate.ddl-auto=update
+        ```
+
+4. **Build the Project**:
+    - Navigate to the project directory and build the project using Maven:
+        ```sh
+        mvn clean install
+        ```
+
+5. **Run the Application**:
+    - Run the Java application:
+        ```sh
+        mvn spring-boot:run
+        ```
 
 ## Usage
-Examples of how to use the project. Screenshots, code snippets, etc.
+
 
 ## Features
-- Feature 1
-- Feature 2
-- Feature 3
+
+- **Instructor Management**
+    - Create and manage instructor profiles including their personal information, specialization, and educational background.
+
+- **Subject Management**
+    - Create and manage subjects including subject names, numbers, and descriptions.
+
+- **Student Management**
+    - Add and manage student profiles including personal information and high school average.
+
+- **Section Management**
+    - Create and manage sections for subjects, including the start and end times, room, and days of the week.
+    - Assign instructors to sections.
+
+- **Enrollment Management**
+    - Enroll students into sections.
+    - Automatically enroll students in random sections based on specified criteria.
+
+- **Graded Item Management**
+    - Create and manage graded items for each section, including titles, descriptions, and dates.
+
+- **Grade Book**
+    - Generate and manage a grade book that combines graded items with student enrollments.
+    - Populate grade books with randomly generated grades based on statistical models.
+
+- **Procedures and Views**
+    - Utilize stored procedures for complex operations like enrollment initialization, grade book population, and generating graded item averages.
+    - Access detailed information on sections, instructors, and subjects through views.
+
+- **Data Integrity and Constraints**
+    - Ensure data integrity with primary keys, foreign keys, and check constraints.
+    - Cascade updates and deletes to maintain consistent data relationships.
+
 
 ## Contributing
 Guidelines for contributing to the project.
