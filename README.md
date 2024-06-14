@@ -166,15 +166,25 @@ Once the application is running, you will see a database login window. Enter the
 
 ![StudentsTab.png](StudentsTab.png)
 
-**Add a New Student:**
-1. Go to the "Students" section.
-2. Click on the "Add Student" button.
+**Add a New Student to institution:**
+1. Go to the "Students" tab.
+2. Click on the "New Student" button.
 3. Fill in the required details (First Name, Last Name, Date of Birth, Home Town, Home Country, High School Average).
-4. Click "Save".
+4. Click "Add Student".
 
-![Add Student](path/to/your/add_student_screenshot.png)
+![NewStudent.png](NewStudent.png)
+
+**Edit/Remove Existing Student:**
+1. Go to the "Students" tab.
+2. Click on the "Remove Student" or "Edit" button.
 
 ### 4. Managing Instructors
+
+**View Instructors:**
+1. Go to the "Instructors" tab.
+2. The list of available instructors will be displayed.
+
+![InstructorsTab.png](InstructorsTab.png)
 
 **Add a New Instructor:**
 1. Go to the "Instructors" section.
@@ -182,13 +192,12 @@ Once the application is running, you will see a database login window. Enter the
 3. Fill in the required details (First Name, Last Name, Date of Birth, Specialization, Education).
 4. Click "Save".
 
-![Add Instructor](path/to/your/add_instructor_screenshot.png)
+![NewInstructor.png](NewInstructor.png)
 
-**View Instructors:**
-1. Go to the "Instructors" section.
-2. The list of instructors will be displayed.
+**Edit/Remove Existing Instructor:**
+1. Go to the "Instructors" tab.
+2. Click on the "Remove Instructor" or "Edit" button.
 
-![View Instructors](path/to/your/view_instructors_screenshot.png)
 
 ### 5. Managing Subjects
 
