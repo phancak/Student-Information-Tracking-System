@@ -1,5 +1,6 @@
 module com.example.demo {
     requires javafx.controls;
+    requires javafx.base;
     requires javafx.fxml;
 
     requires org.controlsfx.controls;
