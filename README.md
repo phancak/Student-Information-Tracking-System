@@ -201,35 +201,26 @@ Once the application is running, you will see a database login window. Enter the
 
 ### 5. Managing Subjects
 
-**Add a New Subject:**
-1. Go to the "Subjects" section.
-2. Click on the "Add Subject" button.
-3. Fill in the required details (Name, Number, Description).
-4. Click "Save".
-
-![Add Subject](path/to/your/add_subject_screenshot.png)
-
-**View Subjects:**
-1. Go to the "Subjects" section.
-2. The list of subjects will be displayed.
-
-![View Subjects](path/to/your/view_subjects_screenshot.png)
+Subjects are managed in the same way as students and instructors. A subject must be created first before a section can be scheduled for it.
 
 ### 6. Managing Sections
 
-**Add a New Section:**
-1. Go to the "Sections" section.
-2. Click on the "Add Section" button.
-3. Fill in the required details (Instructor, Subject, Start Time, End Time, Room, Days).
-4. Click "Save".
-
-![Add Section](path/to/your/add_section_screenshot.png)
-
 **View Sections:**
-1. Go to the "Sections" section.
+1. Go to the "Sections" tab.
 2. The list of sections will be displayed.
 
-![View Sections](path/to/your/view_sections_screenshot.png)
+![SectionsTab.png](SectionsTab.png)
+
+**View Section Enrolment:**
+1. Go to the "Sections" tab.
+2. Click on "View Enrolment" button
+3. The list of students enrolled in the section will be displayed.
+
+![SectionsEnrolmentTab.png](SectionsEnrolmentTab.png)
+
+**Add/Edit/Remove a Section:**
+1. Go to the "Sections" tab.
+2. Click on the "New Section", "Edit Section", or "Remove Section" button.
 
 ### 7. Enrolling Students in Sections
 
