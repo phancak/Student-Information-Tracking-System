@@ -35,8 +35,8 @@ Below are shown a series of sample screenshots of the java based client applicat
 
 ## Table of Contents
 1. [Installation](#installation)
-2. [Usage](#usage)
-3. [Features](#features)
+2. [Features](#eatures)
+3. [Usage](#usage)
 4. [Contributing](#contributing)
 5. [License](#license)
 6. [Authors and Acknowledgments](#authors-and-acknowledgments)
@@ -101,9 +101,6 @@ Follow these steps to set up and run the Java application with a MySQL database:
         mvn spring-boot:run
         ```
 
-## Usage
-
-
 ## Features
 
 - **Instructor Management**
@@ -137,6 +134,162 @@ Follow these steps to set up and run the Java application with a MySQL database:
 - **Data Integrity and Constraints**
     - Ensure data integrity with primary keys, foreign keys, and check constraints.
     - Cascade updates and deletes to maintain consistent data relationships.
+
+## Usage
+
+This section provides detailed instructions on how to use the School Management System application. The application allows users to manage various aspects of a school's operations, including students, instructors, subjects, sections, enrollment, and graded items.
+
+### 1. Launching the Application
+
+1. **Start the MySQL Server**
+    - Ensure that your MySQL server is running. If it's not, start it using the appropriate command for your operating system.
+
+2. **Run the Java Application**
+    - Open your terminal or command prompt.
+    - Navigate to the directory where your Java application JAR file is located.
+    - Execute the following command to run the application:
+      ```bash
+      java -jar schoolApp.jar
+      ```
+
+### 2. Main Dashboard
+
+Once the application is running, you will see a database login window. Enter the login credentials and the main dashboard will open. Here, you can navigate to different sections of the application.
+
+![DatabaseLogin.png](DatabaseLogin.png)
+
+### 3. Managing Students
+
+**View Students:**
+1. Go to the "Students" tab.
+2. The list of students enrolled in the institution will be displayed. You can click on individual students for more personal information and their class enrolment.
+
+![StudentsTab.png](StudentsTab.png)
+
+**Add a New Student:**
+1. Go to the "Students" section.
+2. Click on the "Add Student" button.
+3. Fill in the required details (First Name, Last Name, Date of Birth, Home Town, Home Country, High School Average).
+4. Click "Save".
+
+![Add Student](path/to/your/add_student_screenshot.png)
+
+### 4. Managing Instructors
+
+**Add a New Instructor:**
+1. Go to the "Instructors" section.
+2. Click on the "Add Instructor" button.
+3. Fill in the required details (First Name, Last Name, Date of Birth, Specialization, Education).
+4. Click "Save".
+
+![Add Instructor](path/to/your/add_instructor_screenshot.png)
+
+**View Instructors:**
+1. Go to the "Instructors" section.
+2. The list of instructors will be displayed.
+
+![View Instructors](path/to/your/view_instructors_screenshot.png)
+
+### 5. Managing Subjects
+
+**Add a New Subject:**
+1. Go to the "Subjects" section.
+2. Click on the "Add Subject" button.
+3. Fill in the required details (Name, Number, Description).
+4. Click "Save".
+
+![Add Subject](path/to/your/add_subject_screenshot.png)
+
+**View Subjects:**
+1. Go to the "Subjects" section.
+2. The list of subjects will be displayed.
+
+![View Subjects](path/to/your/view_subjects_screenshot.png)
+
+### 6. Managing Sections
+
+**Add a New Section:**
+1. Go to the "Sections" section.
+2. Click on the "Add Section" button.
+3. Fill in the required details (Instructor, Subject, Start Time, End Time, Room, Days).
+4. Click "Save".
+
+![Add Section](path/to/your/add_section_screenshot.png)
+
+**View Sections:**
+1. Go to the "Sections" section.
+2. The list of sections will be displayed.
+
+![View Sections](path/to/your/view_sections_screenshot.png)
+
+### 7. Enrolling Students in Sections
+
+1. Go to the "Enrollment" section.
+2. Select a section from the dropdown menu.
+3. Choose a student to enroll from the list.
+4. Click "Enroll".
+
+![Enroll Students](path/to/your/enroll_students_screenshot.png)
+
+### 8. Managing Graded Items
+
+**Add a New Graded Item:**
+1. Go to the "Graded Items" section.
+2. Click on the "Add Graded Item" button.
+3. Fill in the required details (Title, Description, Date).
+4. Click "Save".
+
+![Add Graded Item](path/to/your/add_graded_item_screenshot.png)
+
+**View Graded Items:**
+1. Go to the "Graded Items" section.
+2. The list of graded items will be displayed.
+
+![View Graded Items](path/to/your/view_graded_items_screenshot.png)
+
+### 9. Viewing and Entering Grades
+
+1. Go to the "Grade Book" section.
+2. Select a section to view its graded items and students.
+3. Enter grades for each student and graded item.
+4. Click "Save" to update the grades.
+
+![Enter Grades](path/to/your/enter_grades_screenshot.png)
+
+### 10. Generating Reports
+
+1. Go to the "Reports" section.
+2. Select the type of report you want to generate (e.g., Student Grades, Section Averages).
+3. Click "Generate Report".
+
+![Generate Reports](path/to/your/generate_reports_screenshot.png)
+
+### 11. Advanced Database Operations
+
+For advanced users, the application provides options to directly interact with the database for tasks like bulk imports, exports, and custom queries.
+
+**Database Backup:**
+1. Go to the "Database" section.
+2. Click "Backup".
+
+![Database Backup](path/to/your/database_backup_screenshot.png)
+
+**Custom SQL Queries:**
+1. Go to the "SQL" section.
+2. Enter your SQL query.
+3. Click "Execute".
+
+![Custom SQL Queries](path/to/your/custom_sql_queries_screenshot.png)
+
+### 12. Help and Support
+
+If you encounter any issues or need assistance, refer to the "Help" section within the application. You can also contact our support team via email at support@example.com.
+
+![Help and Support](path/to/your/help_support_screenshot.png)
+
+---
+
+With these instructions, you should be able to effectively navigate and use the School Management System application. If you have any questions or feedback, please do not hesitate to reach out.
 
 
 ## Contributing
